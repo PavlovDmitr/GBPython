@@ -26,8 +26,8 @@ def main():
         if sides.get('b') != sides.get('c') or sides.get('a') != sides.get('c') or sides.get('b') != sides.get('a'):
             print('the triangle is isosceles')
         else: print('the triangle is equilateral')
-        pass
-    print(sides)
+    else: print('the triangle is versatile')
+    
 
 if __name__ == "__main__":
     main()
