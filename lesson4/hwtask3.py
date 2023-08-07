@@ -26,7 +26,7 @@ ADD_MENU = "Выберите действие: \n1. Пополнить на 50 �
 
 def clear(ballance):
     os.system('cls' if os.name == 'nt' else 'clear')
-    print("Текущий баланс: {}".format(ballance))
+    print("Текущий баланс: {}".format(round(ballance, 2)))
 
 def cashback(bank: dict):
     cashback = bank.get('ballance') * CASHBACK_PERCENT
@@ -36,13 +36,15 @@ def cashback(bank: dict):
     
 def insert() -> int:
     os.system('cls' if os.name == 'nt' else 'clear')
-    money = input('Введите сумму кратную 50у.е.')
+    print('Введите сумму кратную 50у.е.')
     while True:
-        if money % 50 != 0:
+        money = input()
+        if money.isdigit() and int(money) % 50 == 0:
+            return int(money)
+        else: 
             os.system('cls' if os.name == 'nt' else 'clear')
-            money = input('ОШИБКА. Введите сумму кратную 50у.е.')
-        else: break
-    return money
+            print('ОШИБКА. Введите сумму кратную 50у.е. ')
+    
     
 
     
@@ -61,6 +63,7 @@ def deposit(bank: dict, cash: int) -> str:
 
 def cash(bank: dict, cash: int) -> str:
     if bank['ballance'] >= TAX_FREE_LIMIT:
+        print('ПОЗДРАВЯЛЕМ ВЫ - САМЫЙ ЛЮБИЙ КЛИЕНТ НАШЕГО ПСЕВДОБАНКА')
         ballance = bank.get('ballance')
         bank['ballance'] = ballance - ballance * WEALTH_TAX_PERCENT
     if cash % 50 != 0: return 'fail'
@@ -86,7 +89,8 @@ def main():
     while True:
         clear(bank.get('ballance'))
         print(MAIN_MENU)
-        if input() == '1':
+        menu1 = input()
+        if  menu1 == '1':
             while True:
                 clear(bank.get('ballance'))
                 print(ADD_MENU)
@@ -102,7 +106,27 @@ def main():
                     deposit(bank, insert())
                 elif money == 5: break
                 else: input('Выберите один из пунктов')
-        
+        elif menu1 == '2':
+            while True:
+                clear(bank.get('ballance'))
+                print(ADD_MENU)
+                money = int(input())
+                if money == 1:
+                    cash(bank=bank, cash=50)
+                elif money == 2:
+                    cash(bank=bank, cash=100)
+                elif money == 3:
+                    cash(bank=bank, cash=200)
+
+                elif money == 4:
+                    cash(bank, insert())
+                elif money == 5: break
+                else: input('Выберите один из пунктов')
+        elif menu1 == '3':
+            os.system('cls' if os.name == 'nt' else 'clear')
+            print('Закрытие программы')
+            break
+        else: print('ОШИБКА!ОШИБКА!ОШИБКА!')
 
 if __name__ == "__main__":
     
