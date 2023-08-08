@@ -75,6 +75,8 @@ def cash(bank: dict, cash: int) -> str:
     if bank.get('ballance') > (cash + tax):
         ballance = bank.get('ballance')
         bank['ballance'] = ballance - (cash + tax)
+        bank['history'].append(f'-{cash}')
+        bank['history'].append(f'-{tax}')
     else: return 'fail'
     if bank.get('count') == CASHBACK_COUNT:
         cashback(bank)
