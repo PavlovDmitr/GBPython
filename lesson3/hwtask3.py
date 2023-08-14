@@ -11,12 +11,12 @@ ITEMS = {'Палатка': 1.5, 'Спальник' : 0.75 , 'Коврик': 0.5,
 
 def separate(weight: int):
     result = []
-    
+    isinstance
     for item in ITEMS.keys():
         if (weight - ITEMS.get(item)) > 0:
             weight -= ITEMS.get(item)
             result.append(item)
-       
+        str.sp
     return result
 
 def main():
