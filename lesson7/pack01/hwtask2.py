@@ -10,7 +10,7 @@
 # rename(wanted_name = "video", count_nums=3, extension_old=".txt", extension_new=".csv", diapazon=[3, 6])
 # foto_2002.txt -> o_20video001.csv
 
-from os import chdir, listdir, mkdir, getcwd
+from os import getcwd
 from pathlib import Path
 
 
@@ -30,8 +30,12 @@ def rename(wanted_name: str='', count_nums: int=3,
                 print('New Name ', new_name)
                 file.rename(new_name)
             else: 
-                count=0
-                continue
+                basename = file.name[diapazon[0]: diapazon[1]]
+                count = 0
+                new_name = basename + wanted_name + str(count) + extension_new
+                print('New Name ', new_name)
+                file.rename(new_name)
+                
 
  
 

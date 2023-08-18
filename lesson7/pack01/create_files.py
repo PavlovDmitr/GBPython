@@ -20,12 +20,12 @@ def give_name() -> str:
 
 def create_files(ext: str, min_len: int = 6, 
                  max_len: int = 30, min_size: int = 256,  
-                 max_size: int = 4096, count_files: int = 10):
+                 max_size: int = 4096, count_files: int = 20):
     for _ in range(count_files):
         with(open(give_name() + ext, 'w', encoding='utf-8') as file_output):
             list_of_bytes = bytes([randint(0,255) for x in range(min_size, max_size)])
 
-    file_output.write(str(list_of_bytes))
+            file_output.write(str(list_of_bytes))
 
 
 if __name__ == "__main__":
