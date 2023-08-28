@@ -39,4 +39,5 @@ def create_random_ext_files():
 
 
 if __name__ == "__main__":
-    create_files()
+    d = {'.dir': 10}
+    # create_files()
