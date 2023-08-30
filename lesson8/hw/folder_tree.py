@@ -1,57 +1,64 @@
+import os
+import json, csv, pickle
 from pathlib import Path
 from os import sep as sys_sep
 
 def listing_sub_dir(path: str, dir_tree: list):
     p = Path(path)
-    ldc = 0
-    for item in p.iterdir():
-        if item.is_dir():
-            dir_tree.append({str(item).split(f'{sys_sep}')[1]: []})
-            ldc += 1
-        else: dir_tree.append({str(item).split(f'{sys_sep}')[1]: 'file'})
-    return ldc
+    pdlist = []
+    if p.is_dir():
+        pdlist.append(p)
+    while len(pdlist) > 0:
+        p = pdlist.pop()
+        for item in p.iterdir():
+            item_fish = {'name': str(item).split(f'{sys_sep}')[-1],
+                                "parent": str(item).split(f'{sys_sep}')[-2],
+                                'type': '', 
+                                'size': os.path.getsize(item)}
+            if item.is_dir():
+                item_fish['type'] = 'folder'
+                dir_tree.append(item_fish)
+                pdlist.append(item)
+            else:
+                item_fish['type'] = 'file'
+                dir_tree.append(item_fish)
+
+def scan_folder(path):
+    entries = os.listdir(path)
+    if not entries:
+        return None
+    if len(entries) > 1:
+        result = []
+        for entry in entries:
+            entry_path = path + '/' + entry
+            if os.path.isfile(entry_path):
+                result.append(entry)  
+            else:
+                result.append({ entry: scan_folder(entry_path) })
+        return result
+    entry = entries[0]
+    entry_path = path + '/' + entry
+    if os.path.isfile(entry_path):
+        return entry
+    else:
+        return { entry: scan_folder(entry_path) }
+    
 
 def main():
-    # dir_tree = []
-    
-    # last_dir_count = listing_sub_dir(path, dir_tree)
-    # while last_dir_count > 0:
-      
-    #   last_dir_count = listing_sub_dir(path, dir_tree)  
+    dir = { f'{os.getcwd()}': scan_folder(os.getcwd())}
+    with open('folder.json', 'w') as file:
+        file.write( json.dumps(dir, indent=2, sort_keys=True).replace(": null",": None"))
+    with open('folder.csv', 'w', newline='') as file:
+        all_data = []
+        csv_write = csv.DictWriter(file, fieldnames=['name', 'parent', 'type', 'size'], quoting=csv.QUOTE_ALL)
+        csv_write.writeheader()
+        listing_sub_dir(os.getcwd(), all_data)
+        csv_write.writerows(all_data)
 
-# print('-----------------------------------------------')
-# for item in  list(p.glob('**/*')):
-#     for i in item.parts:
-    path = './lesson8'
-    p = Path(path)
-
-    list_dir = list(p.glob(f'**{sys_sep}*'))
-    #list_dir[0].parts
-    dir_tree = []
-    for file_abs_path in list_dir:
-        print('---------------------', file_abs_path, '------------------------')
-        dir_tree_depth = len(file_abs_path.parts)
-        for item in file_abs_path.parts:
-            
-            if dir_tree.count(item) == 0:
-                print('next append')
-                print(item, '---> ', dir_tree)
-                if dir_tree_depth > 1:
-                    dir_tree.append(f'{item}')
-                    dir_tree_depth -= 1
-                else:
-                    dir_tree.append(f'{item}')
-                    dir_tree_depth -= 1
-            else: continue
-
-           
-        #    print(item) 
-    print(dir_tree)
+    with open('folder.bin', 'wb') as file:
+        pickle.dump(dir, file)
 
 
-
-
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
-    # print(listing_sub_dir('./lesson8'))
+    
