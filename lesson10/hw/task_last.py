@@ -8,24 +8,25 @@ class Animal:
 
     def birthday(self):
         self.age += 1
-                #  name: str = 'dog',
-                #  age: int = 0,
-                #  color: str = 'черный',
-                #  breed : str = 'домашняя',
-                #  is_domestic: bool = True
+
 
 class Dog(Animal):
-    def __init__(self, **kwargs) -> None:
-        super().__init__(name = kwargs['name'], age = kwargs['age'])
+    def __init__(self,
+                name: str = 'dog',
+                age: int = 0,
+                color: str = 'черный',
+                breed : str = 'домашняя',
+                domestic: bool = True) -> None:
+        super().__init__(name = name, age = age)
 
-        self.color = kwargs['color']
-        self.breed = kwargs['breed']
-        self.is_domestic = kwargs['is_domestic']
+        self.color = color
+        self.breed = breed
+        self.is_domestic = domestic
 
     def __str__(self):
         if self.is_domestic:
             return f'Dog {self.name} {self.color} {self.breed} домашняя'
-        return f'Dog {self.name} {self.color} {self.breed} дворняга'
+        return f'Dog {self.name} {self.color}  {self.breed} дворняга'
 
 
 class Kotopes(Animal):
