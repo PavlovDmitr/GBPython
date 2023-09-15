@@ -2,8 +2,13 @@ from time import time
 
 
 class MyStr(str):
+    '''
+    Переопределение класса str
+    '''
     def __new__(cls, value, name):
-        
+        '''
+
+        '''
         instance = super().__new__(cls, value)
         instance.value = value
         instance.name = name
@@ -17,4 +22,5 @@ class MyStr(str):
 if __name__ == '__main__':
     st = MyStr(value='just do it', name='JohnDou')
     print(repr(st))
+    print(st)
     print(st.time_create)
