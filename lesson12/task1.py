@@ -9,6 +9,29 @@
 - Также экземпляр должен сообщать средний балл по тестам для 
 каждого предмета и по оценкам всех предметов вместе взятых.
 '''
+import csv
+import os
+
+
+class Name:
+
+    def __set_name__(self, owner, name):
+        self.param_name = '_' + name
+
+    def __get__(self, instance, owner):
+        return getattr(instance, self.param_name)
+
+    def __set__(self, instance, value):
+        self.validate(value)
+        setattr(instance, self.param_name, value)
+        
+    
+    def validate(self, value: str):
+        if not value.isalpha():
+            raise TypeError(f'Имя {value} должно содержать только буквы')
+        if value[0] != value[0].upper():
+            raise TypeError(f'Имя {value} должно быть с большой буквы')
+
 class Range:
     def __init__(self, min_value: int = None, max_value: int =
         None):
@@ -38,23 +61,26 @@ class Range:
 
 class Student:
     
-    age = Range(3, 103)
-    grade = Range(1, 11 + 1)
-    office = Range(3, 42 + 1)
-    def __init__(self, name, age, grade, office):
+    age = Range(10, 103)
+    name = Name()
+    def load_():
+        current_file = os.path.realpath(__file__)
+        with open(current_file.split('.')[0]+'csv', 'r', newline='', encoding='utf-8') as file:
+            lines = csv.reader(file, delimiter=';')
+        pass
+    def __init__(self, name, age):
         self.name = name
         self.age = age
-        self.grade = grade
-        self.office = office
+
     def __repr__(self):
-        return f'Student(name={self.name}, age={self.age}, grade={self.grade}, office={self.office})'
+        return f'Student(name={self.name}, age={self.age})'
     
 if __name__ == '__main__':
-    std_one = Student('Архимед', 12, 4, 29)
-    std_other = Student('Аристотель', 2406, 5, 17) # ValueError: Значение 2406 должно быть меньше 103 print(f'{std_one = }')
-    std_one.age = 15
+    std_one = Student('Архимед', 16)
+    # std_other = Student('Аристотель') 
+    # std_one.age = 15
     print(f'{std_one = }')
-    std_one.grade = 11.0 # TypeError: Значение 11.0 должно быть целым числом
-    std_one.office = 73 # ValueError: Значение 73 должно быть меньше 42
-    del std_one.age # AttributeError: Свойство "_age" нельзя  удалять
-    print(f'{std_one.__dict__ = }')
+    # std_one.grade = 11.0 # TypeError: Значение 11.0 должно быть целым числом
+    # std_one.office = 73 # ValueError: Значение 73 должно быть меньше 42
+    # del std_one.age # AttributeError: Свойство "_age" нельзя  удалять
+    # print(f'{std_one.__dict__ = }')
