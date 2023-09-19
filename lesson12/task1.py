@@ -11,6 +11,9 @@
 '''
 import csv
 import os
+from Course import Course
+
+from Range import Range
 
 
 class Name:
@@ -24,7 +27,6 @@ class Name:
     def __set__(self, instance, value):
         self.validate(value)
         setattr(instance, self.param_name, value)
-        
     
     def validate(self, value: str):
         if not value.isalpha():
@@ -32,54 +34,47 @@ class Name:
         if value[0] != value[0].upper():
             raise TypeError(f'Имя {value} должно быть с большой буквы')
 
-class Range:
-    def __init__(self, min_value: int = None, max_value: int =
-        None):
-        self.min_value = min_value
-        self.max_value = max_value
-
-    def __set_name__(self, owner, name):
-        self.param_name = '_' + name
-
-    def __get__(self, instance, owner):
-        return getattr(instance, self.param_name)
-    
-    def __set__(self, instance, value):
-        self.validate(value)
-        setattr(instance, self.param_name, value)
-
-    def __delete__(self, instance):
-        raise AttributeError(f'Свойство "{self.param_name}" нельзя удалять')
-
-    def validate(self, value):
-        if not isinstance(value, int):
-            raise TypeError(f'Значение {value} должно быть целым числом')
-        if self.min_value is not None and value < self.min_value:
-            raise ValueError(f'Значение {value} должно быть больше или равно {self.min_value}')
-        if self.max_value is not None and value >= self.max_value:
-            raise ValueError(f'Значение {value} должно быть меньше {self.max_value}')
 
 class Student:
-    
-    age = Range(10, 103)
-    name = Name()
-    def load_():
-        current_file = os.path.realpath(__file__)
-        with open(current_file.split('.')[0]+'csv', 'r', newline='', encoding='utf-8') as file:
-            lines = csv.reader(file, delimiter=';')
-        pass
+
+    __age = Range(10, 103)
+    __name = Name()
+    table = Course
+   
     def __init__(self, name, age):
-        self.name = name
-        self.age = age
+        self.__name = name
+        self.__age = age
+        self.course = 1
+        self.table = Course(self.course)
+
+    def add_test(self, discipline, number, test):
+        self.table.add_test_result(discipline, number, test)
+
+    def set_grade(self, discipline, grade):
+        self.table.add_grade_value(self.table, discipline, grade)
 
     def __repr__(self):
-        return f'Student(name={self.name}, age={self.age})'
+
+        return f'Student(Name={self.__name}, age={self.__age}, Тесты = {self.table})'
+
+    def get_name(self) -> str:
+        return self.__name
     
+
 if __name__ == '__main__':
-    std_one = Student('Архимед', 16)
+    Archimed = Student('Архимед', 16)
+    Archimed.add_test('Алгебра', 1, 94)
+    Archimed.add_test('Алгебра', 2, 92)
+    Archimed.add_test('Алгебра', 3, 10)
+    # Archimed.ins_grade_test('Геометрия', grade = 4, test = 75)
+    # Archimed.ins_grade_test('Математический анализ', grade = 4, test = 85)
+    # Archimed.ins_grade_test('Информатика', grade = 3, test = 64)
+    # Archimed.ins_grade_test('Иностарнный язык', grade = 4, test = 80)
+    # Archimed.ins_grade_test('Литература', 4, 87)
+    # Archimed.ins_test('Математический анализ', 90)
     # std_other = Student('Аристотель') 
     # std_one.age = 15
-    print(f'{std_one = }')
+    print(f'{Archimed = }')
     # std_one.grade = 11.0 # TypeError: Значение 11.0 должно быть целым числом
     # std_one.office = 73 # ValueError: Значение 73 должно быть меньше 42
     # del std_one.age # AttributeError: Свойство "_age" нельзя  удалять
