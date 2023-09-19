@@ -51,7 +51,7 @@ class Student:
         self.table.add_test_result(discipline, number, test)
 
     def set_grade(self, discipline, grade):
-        self.table.add_grade_value(self.table, discipline, grade)
+        self.table.add_grade_value(discipline, grade)
 
     def __repr__(self):
 
@@ -66,6 +66,7 @@ if __name__ == '__main__':
     Archimed.add_test('Алгебра', 1, 94)
     Archimed.add_test('Алгебра', 2, 92)
     Archimed.add_test('Алгебра', 3, 10)
+    Archimed.set_grade('Алгебра', 5)
     # Archimed.ins_grade_test('Геометрия', grade = 4, test = 75)
     # Archimed.ins_grade_test('Математический анализ', grade = 4, test = 85)
     # Archimed.ins_grade_test('Информатика', grade = 3, test = 64)

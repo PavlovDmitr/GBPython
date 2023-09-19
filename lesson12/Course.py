@@ -19,7 +19,9 @@ class Course:
         max_value = 5
         def __init__(self, min_value: int = None, max_value: int = None):
             super().__init__(min_value, max_value)
-    
+
+        
+
     __tests = {str: {str: Test}}
     __grade = {str: Grade}
     __number = Range(1,3)
@@ -60,6 +62,17 @@ class Course:
             count = 1
         return x / count
 
+    def get_grade_avr(self):
+        count = 0
+        x = 0
+        for key in self.__grade.keys():
+            x += self.__grade.get(key)
+            count += 1
+        if count == 0: # копи паст
+            count = 1  
+        return x / count
+    
+
     def __set_name__(self, owner, name):
         self.param_name = '_' + name
 
@@ -71,7 +84,9 @@ class Course:
         setattr(instance, self.param_name, value)
 
     def __repr__(self) -> str:
-        return ', '.join([f'{sub}: {self.get_tests_result(sub)}' for sub in self.__subjects])
+        return ', '.join([f'{sub}: {self.get_tests_result(sub)}' 
+                          for sub in self.__subjects]) + f'Average score {self.get_grade_avr()}'
+
         
 
     def validate(self, value):
